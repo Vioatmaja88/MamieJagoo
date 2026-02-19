@@ -1,13 +1,34 @@
 import { ProductCard } from "@/components/ProductCard";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { categories, products } from "@/lib/mock-data";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+
+const CATEGORIES = ["Semua", "Mie", "Wonton", "Dimsum", "Minuman"];
+
+interface DBProduct {
+  id: string;
+  name: string;
+  price: number;
+  category: string;
+  image_url: string | null;
+  rating: number;
+}
 
 const Menu = () => {
   const [selectedCat, setSelectedCat] = useState("Semua");
   const [search, setSearch] = useState("");
+  const [products, setProducts] = useState<DBProduct[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from("products")
+      .select("id, name, price, category, image_url, rating")
+      .eq("is_active", true)
+      .order("created_at", { ascending: false })
+      .then(({ data }) => setProducts(data ?? []));
+  }, []);
 
   const filtered = products
     .filter((p) => selectedCat === "Semua" || p.category === selectedCat)
@@ -23,7 +44,6 @@ const Menu = () => {
       </header>
 
       <main className="max-w-lg mx-auto px-4 space-y-4 mt-4">
-        {/* Search */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <input
@@ -34,9 +54,8 @@ const Menu = () => {
           />
         </div>
 
-        {/* Categories */}
         <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-          {categories.map((cat) => (
+          {CATEGORIES.map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCat(cat)}
@@ -51,15 +70,9 @@ const Menu = () => {
           ))}
         </div>
 
-        {/* Grid */}
         <div className="grid grid-cols-2 gap-3">
           {filtered.map((p, i) => (
-            <motion.div
-              key={p.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
-            >
+            <motion.div key={p.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
               <ProductCard product={p} />
             </motion.div>
           ))}

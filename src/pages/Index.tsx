@@ -1,18 +1,40 @@
 import { BannerSlider } from "@/components/BannerSlider";
 import { ProductCard } from "@/components/ProductCard";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { categories, products } from "@/lib/mock-data";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
+
+const CATEGORIES = ["Semua", "Mie", "Wonton", "Dimsum", "Minuman"];
+
+interface DBProduct {
+  id: string;
+  name: string;
+  price: number;
+  category: string;
+  image_url: string | null;
+  rating: number;
+  is_active: boolean;
+}
 
 const Index = () => {
   const [selectedCat, setSelectedCat] = useState("Semua");
+  const [products, setProducts] = useState<DBProduct[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from("products")
+      .select("id, name, price, category, image_url, rating, is_active")
+      .eq("is_active", true)
+      .order("created_at", { ascending: false })
+      .then(({ data }) => setProducts(data ?? []));
+  }, []);
+
   const filtered = selectedCat === "Semua" ? products : products.filter((p) => p.category === selectedCat);
-  const popular = products.filter((p) => p.rating >= 4.6).slice(0, 4);
+  const popular = products.filter((p) => Number(p.rating) >= 4.6).slice(0, 4);
 
   return (
     <div className="pb-20">
-      {/* Header */}
       <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="flex items-center justify-between px-4 py-3 max-w-lg mx-auto">
           <div>
@@ -24,12 +46,10 @@ const Index = () => {
       </header>
 
       <main className="max-w-lg mx-auto px-4 space-y-6 mt-4">
-        {/* Banner */}
         <BannerSlider />
 
-        {/* Categories */}
         <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-          {categories.map((cat) => (
+          {CATEGORIES.map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCat(cat)}
@@ -44,18 +64,12 @@ const Index = () => {
           ))}
         </div>
 
-        {/* Popular */}
-        {selectedCat === "Semua" && (
+        {selectedCat === "Semua" && popular.length > 0 && (
           <section>
             <h2 className="text-base font-bold text-foreground mb-3">🔥 Populer</h2>
             <div className="grid grid-cols-2 gap-3">
               {popular.map((p, i) => (
-                <motion.div
-                  key={p.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.08 }}
-                >
+                <motion.div key={p.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}>
                   <ProductCard product={p} />
                 </motion.div>
               ))}
@@ -63,19 +77,13 @@ const Index = () => {
           </section>
         )}
 
-        {/* All / Filtered */}
         <section>
           <h2 className="text-base font-bold text-foreground mb-3">
             {selectedCat === "Semua" ? "Semua Menu" : selectedCat}
           </h2>
           <div className="grid grid-cols-2 gap-3">
             {filtered.map((p, i) => (
-              <motion.div
-                key={p.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05 }}
-              >
+              <motion.div key={p.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
                 <ProductCard product={p} />
               </motion.div>
             ))}
