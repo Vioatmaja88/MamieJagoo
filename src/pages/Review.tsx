@@ -1,9 +1,29 @@
-import { mockReviews } from "@/lib/mock-data";
+import { useEffect, useState } from "react";
 import { Star } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { motion } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
+
+interface Review {
+  id: string;
+  customer_name: string;
+  rating: number;
+  comment: string | null;
+  created_at: string;
+}
 
 const Review = () => {
+  const [reviews, setReviews] = useState<Review[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from("reviews")
+      .select("id, customer_name, rating, comment, created_at")
+      .eq("is_approved", true)
+      .order("created_at", { ascending: false })
+      .then(({ data }) => setReviews(data ?? []));
+  }, []);
+
   return (
     <div className="pb-20">
       <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border">
@@ -14,7 +34,7 @@ const Review = () => {
       </header>
 
       <main className="max-w-lg mx-auto px-4 mt-4 space-y-3">
-        {mockReviews.map((r, i) => (
+        {reviews.map((r, i) => (
           <motion.div
             key={r.id}
             initial={{ opacity: 0, y: 15 }}
@@ -25,11 +45,13 @@ const Review = () => {
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
-                  {r.name[0]}
+                  {r.customer_name[0]}
                 </div>
                 <div>
-                  <p className="font-semibold text-sm text-foreground">{r.name}</p>
-                  <p className="text-[10px] text-muted-foreground">{r.date}</p>
+                  <p className="font-semibold text-sm text-foreground">{r.customer_name}</p>
+                  <p className="text-[10px] text-muted-foreground">
+                    {new Date(r.created_at).toLocaleDateString("id-ID")}
+                  </p>
                 </div>
               </div>
               <div className="flex gap-0.5">
@@ -41,9 +63,12 @@ const Review = () => {
                 ))}
               </div>
             </div>
-            <p className="text-sm text-muted-foreground">{r.comment}</p>
+            {r.comment && <p className="text-sm text-muted-foreground">{r.comment}</p>}
           </motion.div>
         ))}
+        {reviews.length === 0 && (
+          <p className="text-center text-muted-foreground py-8 text-sm">Belum ada review.</p>
+        )}
       </main>
     </div>
   );
