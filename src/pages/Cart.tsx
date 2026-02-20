@@ -182,7 +182,7 @@ function CartItemRow({
       <img src={item.image} alt={item.name} className="w-16 h-16 rounded-xl object-cover flex-shrink-0" />
       <div className="flex-1 min-w-0">
         <h3 className="font-semibold text-sm text-foreground truncate">{item.name}</h3>
-        <p className="text-xs text-muted-foreground">{item.variant}{item.spiceLevel ? ` • ${item.spiceLevel}` : ""}</p>
+        <p className="text-xs text-muted-foreground">{item.variant}</p>
         <p className="text-primary font-bold text-sm mt-0.5">{formatRupiah(item.price)}</p>
       </div>
       <div className="flex flex-col items-end justify-between">

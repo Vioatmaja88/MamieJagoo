@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { formatRupiah } from "@/lib/mock-data";
-import { ArrowLeft, ShoppingCart, Star, MessageCircle } from "lucide-react";
+import { ArrowLeft, ShoppingCart, Star, MessageCircle, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/lib/cart-context";
 import { useState, useEffect } from "react";
@@ -18,6 +18,14 @@ interface DBProduct {
   rating: number;
 }
 
+interface ReviewItem {
+  id: string;
+  customer_name: string;
+  rating: number;
+  comment: string | null;
+  created_at: string;
+}
+
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -27,11 +35,13 @@ const ProductDetail = () => {
   const [variants, setVariants] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedVariant, setSelectedVariant] = useState("");
-  const [selectedSpice, setSelectedSpice] = useState("");
 
-  const spiceLevels = product?.category === "Mie" || product?.category === "Wonton"
-    ? ["Tidak Pedas", "Pedas", "Extra Pedas", "Pedas Nampol"]
-    : [];
+  // Review state
+  const [reviews, setReviews] = useState<ReviewItem[]>([]);
+  const [reviewName, setReviewName] = useState("");
+  const [reviewRating, setReviewRating] = useState(5);
+  const [reviewComment, setReviewComment] = useState("");
+  const [submittingReview, setSubmittingReview] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -46,7 +56,37 @@ const ProductDetail = () => {
       setLoading(false);
     }
     load();
+    loadReviews();
   }, [id]);
+
+  const loadReviews = async () => {
+    const { data } = await supabase
+      .from("reviews")
+      .select("id, customer_name, rating, comment, created_at")
+      .eq("is_approved", true)
+      .order("created_at", { ascending: false })
+      .limit(10);
+    setReviews(data ?? []);
+  };
+
+  const handleSubmitReview = async () => {
+    if (!reviewName.trim()) { toast.error("Masukkan nama kamu"); return; }
+    setSubmittingReview(true);
+    const { error } = await supabase.from("reviews").insert({
+      customer_name: reviewName.trim(),
+      rating: reviewRating,
+      comment: reviewComment.trim() || null,
+    });
+    if (error) {
+      toast.error("Gagal mengirim review");
+    } else {
+      toast.success("Review terkirim! Menunggu persetujuan admin.");
+      setReviewName("");
+      setReviewRating(5);
+      setReviewComment("");
+    }
+    setSubmittingReview(false);
+  };
 
   if (loading) {
     return (
@@ -71,14 +111,13 @@ const ProductDetail = () => {
       price: product.price,
       image: product.image_url ?? "/placeholder.svg",
       variant: selectedVariant,
-      spiceLevel: selectedSpice || undefined,
     });
     toast.success("Ditambahkan ke cart!", { description: `${product.name} — ${selectedVariant}` });
   };
 
   const handleWhatsApp = () => {
     const msg = encodeURIComponent(
-      `Halo MamieJago! Saya mau pesan:\n\n📦 ${product.name}\n🔸 Varian: ${selectedVariant}${selectedSpice ? `\n🌶️ Level: ${selectedSpice}` : ""}\n💰 ${formatRupiah(product.price)}\n\nTerima kasih!`
+      `Halo MamieJago! Saya mau pesan:\n\n📦 ${product.name}\n🔸 Varian: ${selectedVariant}\n💰 ${formatRupiah(product.price)}\n\nTerima kasih!`
     );
     window.open(`https://wa.me/62881023406838?text=${msg}`, "_blank");
   };
@@ -131,25 +170,6 @@ const ProductDetail = () => {
             </div>
           )}
 
-          {spiceLevels.length > 0 && (
-            <div>
-              <h3 className="text-sm font-semibold text-foreground mb-2">🌶️ Level Pedas</h3>
-              <div className="flex flex-wrap gap-2">
-                {spiceLevels.map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => setSelectedSpice(s)}
-                    className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
-                      selectedSpice === s ? "bg-destructive text-destructive-foreground" : "bg-muted text-muted-foreground"
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
           <div className="flex gap-3 pt-2">
             <Button onClick={handleAddToCart} className="flex-1 rounded-xl h-12 text-sm font-semibold">
               <ShoppingCart className="h-4 w-4 mr-2" />
@@ -162,6 +182,85 @@ const ProductDetail = () => {
             >
               <MessageCircle className="h-4 w-4" />
             </Button>
+          </div>
+
+          {/* Review Section */}
+          <div className="border-t border-border pt-4 mt-4 space-y-4">
+            <h3 className="text-base font-bold text-foreground">Tulis Review</h3>
+            <div className="bg-card rounded-2xl border border-border p-4 space-y-3">
+              <input
+                value={reviewName}
+                onChange={(e) => setReviewName(e.target.value)}
+                placeholder="Nama kamu"
+                className="w-full px-3 py-2.5 bg-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition"
+              />
+              <div>
+                <p className="text-xs text-muted-foreground mb-1.5">Rating</p>
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <button key={s} onClick={() => setReviewRating(s)}>
+                      <Star
+                        className={`h-6 w-6 transition-colors ${
+                          s <= reviewRating ? "fill-secondary text-secondary" : "text-muted-foreground"
+                        }`}
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <textarea
+                value={reviewComment}
+                onChange={(e) => setReviewComment(e.target.value)}
+                placeholder="Komentar (opsional)"
+                rows={2}
+                className="w-full px-3 py-2.5 bg-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none transition"
+              />
+              <Button
+                onClick={handleSubmitReview}
+                disabled={submittingReview || !reviewName.trim()}
+                className="w-full rounded-xl h-10 text-sm"
+              >
+                <Send className="h-4 w-4 mr-2" />
+                {submittingReview ? "Mengirim..." : "Kirim Review"}
+              </Button>
+            </div>
+
+            {/* Existing reviews */}
+            {reviews.length > 0 && (
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold text-foreground">Review Terbaru</h3>
+                {reviews.map((r, i) => (
+                  <motion.div
+                    key={r.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.05 }}
+                    className="bg-card rounded-2xl border border-border p-3"
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">
+                          {r.customer_name[0]}
+                        </div>
+                        <p className="font-semibold text-sm text-foreground">{r.customer_name}</p>
+                      </div>
+                      <div className="flex gap-0.5">
+                        {Array.from({ length: 5 }).map((_, j) => (
+                          <Star
+                            key={j}
+                            className={`h-3 w-3 ${j < r.rating ? "fill-secondary text-secondary" : "text-muted"}`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    {r.comment && <p className="text-xs text-muted-foreground mt-1">{r.comment}</p>}
+                    <p className="text-[10px] text-muted-foreground mt-1">
+                      {new Date(r.created_at).toLocaleDateString("id-ID")}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </main>
