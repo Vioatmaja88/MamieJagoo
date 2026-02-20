@@ -29,7 +29,7 @@ const Cart = () => {
     const msg = encodeURIComponent(
       `📦 *Pesanan MamieJago*\n🆔 ${orderId}\n\n👤 ${customerName}\n📱 ${customerWA}\n\n${itemLines}\n\n💰 *Total: ${formatRupiah(totalPrice)}*${note ? `\n📝 Catatan: ${note}` : ""}\n\nTerima kasih! 🙏`
     );
-    window.open(`https://wa.me/6281234567890?text=${msg}`, "_blank");
+    window.open(`https://wa.me/62881023406838?text=${msg}`, "_blank");
     clearCart();
     setShowReceipt(false);
   };
