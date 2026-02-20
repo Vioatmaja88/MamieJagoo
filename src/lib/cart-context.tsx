@@ -6,7 +6,6 @@ export interface CartItem {
   price: number;
   image: string;
   variant?: string;
-  spiceLevel?: string;
   qty: number;
 }
 
