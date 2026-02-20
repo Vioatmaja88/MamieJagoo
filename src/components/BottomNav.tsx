@@ -17,7 +17,7 @@ export function BottomNav() {
   const { totalItems } = useCart();
 
   // Hide bottom nav on admin pages
-  if (location.pathname.startsWith("/admin")) return null;
+  if (location.pathname.startsWith("/admin") || location.pathname === "/auth") return null;
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card shadow-nav border-t border-border">

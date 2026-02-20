@@ -80,7 +80,7 @@ const ProductDetail = () => {
     const msg = encodeURIComponent(
       `Halo MamieJago! Saya mau pesan:\n\n📦 ${product.name}\n🔸 Varian: ${selectedVariant}${selectedSpice ? `\n🌶️ Level: ${selectedSpice}` : ""}\n💰 ${formatRupiah(product.price)}\n\nTerima kasih!`
     );
-    window.open(`https://wa.me/6281234567890?text=${msg}`, "_blank");
+    window.open(`https://wa.me/62881023406838?text=${msg}`, "_blank");
   };
 
   return (
