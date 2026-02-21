@@ -1,6 +1,6 @@
 import { useCart, CartItem } from "@/lib/cart-context";
 import { formatRupiah } from "@/lib/mock-data";
-import { ArrowLeft, Minus, Plus, Trash2, MessageCircle, Receipt } from "lucide-react";
+import { Minus, Plus, Trash2, MessageCircle, Receipt } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -36,17 +36,17 @@ const Cart = () => {
 
   if (items.length === 0) {
     return (
-      <div className="pb-20">
-        <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border">
-          <div className="flex items-center justify-between px-4 py-3 max-w-lg mx-auto">
-            <h1 className="text-lg font-extrabold text-foreground">Cart</h1>
+      <div className="pb-24">
+        <header className="sticky top-0 z-40 bg-background/70 backdrop-blur-xl border-b border-border/50">
+          <div className="flex items-center justify-between px-5 py-3.5 max-w-lg mx-auto">
+            <h1 className="text-xl font-extrabold text-foreground tracking-tight">Cart</h1>
             <ThemeToggle />
           </div>
         </header>
-        <div className="flex flex-col items-center justify-center py-20 px-4 max-w-lg mx-auto">
-          <div className="text-6xl mb-4">🛒</div>
-          <p className="text-muted-foreground text-sm">Cart kamu masih kosong</p>
-          <Button onClick={() => navigate("/menu")} className="mt-4 rounded-xl">
+        <div className="flex flex-col items-center justify-center py-24 px-5 max-w-lg mx-auto">
+          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-6xl mb-5">🛒</motion.div>
+          <p className="text-muted-foreground text-sm mb-5">Cart kamu masih kosong</p>
+          <Button onClick={() => navigate("/menu")} className="rounded-xl shadow-md shadow-primary/20 hover:scale-[1.02] transition-all">
             Lihat Menu
           </Button>
         </div>
@@ -55,15 +55,15 @@ const Cart = () => {
   }
 
   return (
-    <div className="pb-20">
-      <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="flex items-center justify-between px-4 py-3 max-w-lg mx-auto">
-          <h1 className="text-lg font-extrabold text-foreground">Cart ({totalItems})</h1>
+    <div className="pb-24">
+      <header className="sticky top-0 z-40 bg-background/70 backdrop-blur-xl border-b border-border/50">
+        <div className="flex items-center justify-between px-5 py-3.5 max-w-lg mx-auto">
+          <h1 className="text-xl font-extrabold text-foreground tracking-tight">Cart ({totalItems})</h1>
           <ThemeToggle />
         </div>
       </header>
 
-      <main className="max-w-lg mx-auto px-4 mt-4 space-y-3">
+      <main className="max-w-lg mx-auto px-5 mt-5 space-y-3">
         <AnimatePresence>
           {items.map((item) => (
             <CartItemRow key={`${item.id}-${item.variant}`} item={item} updateQty={updateQty} removeItem={removeItem} />
@@ -71,40 +71,49 @@ const Cart = () => {
         </AnimatePresence>
 
         {/* Checkout form */}
-        <div className="bg-card rounded-2xl border border-border p-4 space-y-3 mt-4">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-card rounded-2xl border border-border/60 p-5 space-y-3 mt-2 shadow-sm"
+        >
           <h3 className="font-semibold text-foreground text-sm">Info Pemesan</h3>
           <input
             value={customerName}
             onChange={(e) => setCustomerName(e.target.value)}
             placeholder="Nama"
-            className="w-full px-3 py-2.5 bg-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+            className="w-full px-4 py-3 bg-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all"
           />
           <input
             value={customerWA}
             onChange={(e) => setCustomerWA(e.target.value)}
             placeholder="No. WhatsApp"
-            className="w-full px-3 py-2.5 bg-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+            className="w-full px-4 py-3 bg-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all"
           />
           <textarea
             value={note}
             onChange={(e) => setNote(e.target.value)}
             placeholder="Catatan (opsional)"
             rows={2}
-            className="w-full px-3 py-2.5 bg-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
+            className="w-full px-4 py-3 bg-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none transition-all"
           />
-        </div>
+        </motion.div>
 
         {/* Total & Buttons */}
-        <div className="bg-card rounded-2xl border border-border p-4">
-          <div className="flex items-center justify-between mb-3">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="bg-card rounded-2xl border border-border/60 p-5 shadow-sm"
+        >
+          <div className="flex items-center justify-between mb-4">
             <span className="text-sm text-muted-foreground">Total</span>
-            <span className="text-xl font-bold text-primary">{formatRupiah(totalPrice)}</span>
+            <span className="text-2xl font-bold text-primary">{formatRupiah(totalPrice)}</span>
           </div>
           <div className="flex gap-3">
             <Button
               onClick={() => setShowReceipt(true)}
               variant="outline"
-              className="flex-1 rounded-xl h-11"
+              className="flex-1 rounded-xl h-12 font-semibold hover:scale-[1.01] transition-all"
               disabled={!customerName || !customerWA}
             >
               <Receipt className="h-4 w-4 mr-2" />
@@ -112,19 +121,19 @@ const Cart = () => {
             </Button>
             <Button
               onClick={handleSendWA}
-              className="flex-1 rounded-xl h-11 bg-green-600 hover:bg-green-700 text-white"
+              className="flex-1 rounded-xl h-12 bg-green-600 hover:bg-green-700 text-white font-semibold shadow-md shadow-green-600/20 hover:scale-[1.01] transition-all"
               disabled={!customerName || !customerWA}
             >
               <MessageCircle className="h-4 w-4 mr-2" />
-              Kirim ke Penjual
+              Kirim WA
             </Button>
           </div>
-        </div>
+        </motion.div>
       </main>
 
       {/* Receipt Dialog */}
       <Dialog open={showReceipt} onOpenChange={setShowReceipt}>
-        <DialogContent className="max-w-sm mx-auto rounded-2xl">
+        <DialogContent className="max-w-sm mx-auto rounded-2xl border-border/60">
           <DialogHeader>
             <DialogTitle className="text-center text-primary font-extrabold text-xl">MamieJago</DialogTitle>
           </DialogHeader>
@@ -139,9 +148,7 @@ const Cart = () => {
           <div className="border-t border-dashed border-border mt-3 pt-3 space-y-2">
             {items.map((item) => (
               <div key={`${item.id}-${item.variant}`} className="flex justify-between text-sm">
-                <span>
-                  {item.name} ({item.variant}) x{item.qty}
-                </span>
+                <span>{item.name} ({item.variant}) x{item.qty}</span>
                 <span className="font-medium">{formatRupiah(item.price * item.qty)}</span>
               </div>
             ))}
@@ -153,10 +160,10 @@ const Cart = () => {
           {note && <p className="text-xs text-muted-foreground mt-2">📝 {note}</p>}
           <Button
             onClick={handleSendWA}
-            className="w-full mt-4 rounded-xl h-11 bg-green-600 hover:bg-green-700 text-white"
+            className="w-full mt-4 rounded-xl h-12 bg-green-600 hover:bg-green-700 text-white font-semibold shadow-md"
           >
             <MessageCircle className="h-4 w-4 mr-2" />
-            Kirim ke Penjual via WhatsApp
+            Kirim via WhatsApp
           </Button>
         </DialogContent>
       </Dialog>
@@ -176,33 +183,37 @@ function CartItemRow({
   return (
     <motion.div
       layout
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, x: -100 }}
-      className="bg-card rounded-2xl border border-border p-3 flex gap-3"
+      className="bg-card rounded-2xl border border-border/60 p-4 flex gap-3.5 shadow-sm"
     >
-      <img src={item.image} alt={item.name} className="w-16 h-16 rounded-xl object-cover flex-shrink-0" />
+      <img src={item.image} alt={item.name} className="w-18 h-18 rounded-xl object-cover flex-shrink-0" />
       <div className="flex-1 min-w-0">
         <h3 className="font-semibold text-sm text-foreground truncate">{item.name}</h3>
-        <p className="text-xs text-muted-foreground">{item.variant}</p>
-        <p className="text-primary font-bold text-sm mt-0.5">{formatRupiah(item.price)}</p>
+        <p className="text-xs text-muted-foreground mt-0.5">{item.variant}</p>
+        <p className="text-primary font-bold text-sm mt-1">{formatRupiah(item.price)}</p>
       </div>
       <div className="flex flex-col items-end justify-between">
-        <button onClick={() => removeItem(item.id, item.variant)}>
+        <motion.button whileTap={{ scale: 0.8 }} onClick={() => removeItem(item.id, item.variant)}>
           <Trash2 className="h-4 w-4 text-muted-foreground hover:text-destructive transition-colors" />
-        </button>
-        <div className="flex items-center gap-2">
-          <button
+        </motion.button>
+        <div className="flex items-center gap-2.5">
+          <motion.button
+            whileTap={{ scale: 0.85 }}
             onClick={() => updateQty(item.id, item.variant, item.qty - 1)}
-            className="w-6 h-6 rounded-full bg-muted flex items-center justify-center"
+            className="w-7 h-7 rounded-lg bg-muted flex items-center justify-center hover:bg-accent transition-colors"
           >
-            <Minus className="h-3 w-3" />
-          </button>
-          <span className="text-sm font-semibold w-4 text-center">{item.qty}</span>
-          <button
+            <Minus className="h-3.5 w-3.5" />
+          </motion.button>
+          <span className="text-sm font-bold w-4 text-center">{item.qty}</span>
+          <motion.button
+            whileTap={{ scale: 0.85 }}
             onClick={() => updateQty(item.id, item.variant, item.qty + 1)}
-            className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center"
+            className="w-7 h-7 rounded-lg bg-primary text-primary-foreground flex items-center justify-center"
           >
-            <Plus className="h-3 w-3" />
-          </button>
+            <Plus className="h-3.5 w-3.5" />
+          </motion.button>
         </div>
       </div>
     </motion.div>

@@ -4,6 +4,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import { Flame, Sparkles } from "lucide-react";
 
 const CATEGORIES = ["Semua", "Mie", "Wonton", "Dimsum", "Minuman"];
 
@@ -16,6 +17,15 @@ interface DBProduct {
   rating: number;
   is_active: boolean;
 }
+
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.06 } },
+};
+const item = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" as const } },
+};
 
 const Index = () => {
   const [selectedCat, setSelectedCat] = useState("Semua");
@@ -34,60 +44,85 @@ const Index = () => {
   const popular = products.filter((p) => Number(p.rating) >= 4.6).slice(0, 4);
 
   return (
-    <div className="pb-20">
-      <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="flex items-center justify-between px-4 py-3 max-w-lg mx-auto">
+    <div className="pb-24">
+      {/* Header */}
+      <header className="sticky top-0 z-40 bg-background/70 backdrop-blur-xl border-b border-border/50">
+        <div className="flex items-center justify-between px-5 py-3.5 max-w-lg mx-auto">
           <div>
-            <h1 className="text-lg font-extrabold text-primary">MamieJago</h1>
-            <p className="text-[11px] text-muted-foreground -mt-0.5">Makanan Siap Saji Premium 🍜</p>
+            <h1 className="text-xl font-extrabold text-primary tracking-tight">MamieJago</h1>
+            <p className="text-[11px] text-muted-foreground -mt-0.5 tracking-wide">Makanan Siap Saji Premium 🍜</p>
           </div>
           <ThemeToggle />
         </div>
       </header>
 
-      <main className="max-w-lg mx-auto px-4 space-y-6 mt-4">
+      <main className="max-w-lg mx-auto px-5 space-y-7 mt-5">
         <BannerSlider />
 
-        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+        {/* Category filter */}
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide -mx-1 px-1">
           {CATEGORIES.map((cat) => (
-            <button
+            <motion.button
               key={cat}
+              whileTap={{ scale: 0.95 }}
               onClick={() => setSelectedCat(cat)}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 ${
+              className={`px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all duration-250 ${
                 selectedCat === cat
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
+                  : "bg-muted text-muted-foreground hover:bg-accent"
               }`}
             >
               {cat}
-            </button>
+            </motion.button>
           ))}
         </div>
 
+        {/* Popular */}
         {selectedCat === "Semua" && popular.length > 0 && (
           <section>
-            <h2 className="text-base font-bold text-foreground mb-3">🔥 Populer</h2>
-            <div className="grid grid-cols-2 gap-3">
-              {popular.map((p, i) => (
-                <motion.div key={p.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}>
+            <div className="flex items-center gap-2 mb-4">
+              <Flame className="h-5 w-5 text-primary" />
+              <h2 className="text-base font-bold text-foreground">Populer</h2>
+            </div>
+            <motion.div
+              variants={container}
+              initial="hidden"
+              animate="show"
+              className="grid grid-cols-2 gap-3.5"
+            >
+              {popular.map((p) => (
+                <motion.div key={p.id} variants={item}>
                   <ProductCard product={p} />
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           </section>
         )}
 
+        {/* All products */}
         <section>
-          <h2 className="text-base font-bold text-foreground mb-3">
-            {selectedCat === "Semua" ? "Semua Menu" : selectedCat}
-          </h2>
-          <div className="grid grid-cols-2 gap-3">
-            {filtered.map((p, i) => (
-              <motion.div key={p.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
+          <div className="flex items-center gap-2 mb-4">
+            <Sparkles className="h-5 w-5 text-secondary" />
+            <h2 className="text-base font-bold text-foreground">
+              {selectedCat === "Semua" ? "Semua Menu" : selectedCat}
+            </h2>
+          </div>
+          <motion.div
+            key={selectedCat}
+            variants={container}
+            initial="hidden"
+            animate="show"
+            className="grid grid-cols-2 gap-3.5"
+          >
+            {filtered.map((p) => (
+              <motion.div key={p.id} variants={item}>
                 <ProductCard product={p} />
               </motion.div>
             ))}
-          </div>
+          </motion.div>
+          {filtered.length === 0 && (
+            <p className="text-center text-muted-foreground py-12 text-sm">Tidak ada menu ditemukan.</p>
+          )}
         </section>
       </main>
     </div>
