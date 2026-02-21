@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
@@ -53,8 +53,8 @@ const Profile = () => {
     const file = e.target.files?.[0];
     if (!file || !user) return;
 
-    if (file.size > 2 * 1024 * 1024) {
-      toast.error("Ukuran file maksimal 2MB");
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("Ukuran file maksimal 10MB");
       return;
     }
 
@@ -128,35 +128,34 @@ const Profile = () => {
   // Not logged in state
   if (!authLoading && !user) {
     return (
-      <div className="pb-20">
-        <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border">
-          <div className="flex items-center justify-between px-4 py-3 max-w-lg mx-auto">
-            <h1 className="text-lg font-extrabold text-foreground">Profile</h1>
+      <div className="pb-24">
+        <header className="sticky top-0 z-40 bg-background/70 backdrop-blur-xl border-b border-border/50">
+          <div className="flex items-center justify-between px-5 py-3.5 max-w-lg mx-auto">
+            <h1 className="text-xl font-extrabold text-foreground tracking-tight">Profile</h1>
             <ThemeToggle />
           </div>
         </header>
 
-        <main className="max-w-lg mx-auto px-4 mt-6">
+        <main className="max-w-lg mx-auto px-5 mt-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col items-center py-12"
+            className="flex flex-col items-center py-16"
           >
-            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-              <User className="h-10 w-10 text-primary" />
+            <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center mb-5">
+              <User className="h-12 w-12 text-primary" />
             </div>
             <h2 className="text-lg font-bold text-foreground mb-1">Belum Login</h2>
-            <p className="text-sm text-muted-foreground mb-6">Masuk untuk mengakses profil kamu</p>
+            <p className="text-sm text-muted-foreground mb-8">Masuk untuk mengakses profil kamu</p>
             <Button
               onClick={() => navigate("/auth")}
-              className="rounded-xl h-12 px-8 text-sm font-semibold transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+              className="rounded-xl h-12 px-8 text-sm font-semibold shadow-md shadow-primary/20 hover:shadow-primary/30 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
             >
               <LogIn className="h-4 w-4 mr-2" />
               Login / Register
             </Button>
           </motion.div>
 
-          {/* Admin link */}
           <div className="pt-4">
             <Button
               onClick={() => navigate("/admin")}
@@ -181,15 +180,15 @@ const Profile = () => {
   }
 
   return (
-    <div className="pb-20">
-      <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="flex items-center justify-between px-4 py-3 max-w-lg mx-auto">
-          <h1 className="text-lg font-extrabold text-foreground">Profile</h1>
+    <div className="pb-24">
+      <header className="sticky top-0 z-40 bg-background/70 backdrop-blur-xl border-b border-border/50">
+        <div className="flex items-center justify-between px-5 py-3.5 max-w-lg mx-auto">
+          <h1 className="text-xl font-extrabold text-foreground tracking-tight">Profile</h1>
           <ThemeToggle />
         </div>
       </header>
 
-      <main className="max-w-lg mx-auto px-4 mt-6 space-y-5">
+      <main className="max-w-lg mx-auto px-5 mt-6 space-y-5">
         {/* Avatar section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -197,23 +196,24 @@ const Profile = () => {
           className="flex flex-col items-center"
         >
           <div className="relative group">
-            <Avatar className="w-24 h-24 border-4 border-background shadow-lg">
+            <Avatar className="w-28 h-28 border-4 border-background shadow-xl">
               <AvatarImage src={profile?.avatar_url ?? undefined} alt="Avatar" />
-              <AvatarFallback className="bg-primary/10 text-primary text-2xl font-bold">
+              <AvatarFallback className="bg-primary/10 text-primary text-3xl font-bold">
                 {(profile?.display_name ?? user?.email ?? "U")[0].toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            <button
+            <motion.button
+              whileTap={{ scale: 0.85 }}
               onClick={() => fileInputRef.current?.click()}
               disabled={uploading}
-              className="absolute bottom-0 right-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center shadow-md hover:scale-110 transition-transform"
+              className="absolute bottom-0 right-0 w-9 h-9 bg-primary text-primary-foreground rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
             >
               {uploading ? (
                 <div className="animate-spin h-4 w-4 border-2 border-primary-foreground border-t-transparent rounded-full" />
               ) : (
                 <Camera className="h-4 w-4" />
               )}
-            </button>
+            </motion.button>
             <input
               ref={fileInputRef}
               type="file"
@@ -222,7 +222,7 @@ const Profile = () => {
               className="hidden"
             />
           </div>
-          <h2 className="text-lg font-bold text-foreground mt-3">{profile?.display_name ?? "User"}</h2>
+          <h2 className="text-lg font-bold text-foreground mt-4">{profile?.display_name ?? "User"}</h2>
           <p className="text-sm text-muted-foreground">{user?.email}</p>
         </motion.div>
 
@@ -231,30 +231,30 @@ const Profile = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-card rounded-2xl border border-border p-4 space-y-4"
+          className="bg-card rounded-2xl border border-border/60 p-5 space-y-4 shadow-sm"
         >
           <h3 className="font-semibold text-foreground text-sm">Informasi Profil</h3>
 
           <div className="space-y-1.5">
-            <Label htmlFor="edit-name" className="text-xs">Nama</Label>
+            <Label htmlFor="edit-name" className="text-xs text-muted-foreground">Nama</Label>
             <Input
               id="edit-name"
               value={editName}
               onChange={(e) => setEditName(e.target.value)}
               placeholder="Nama kamu"
-              className="rounded-xl h-11"
+              className="rounded-xl h-11 bg-muted border-0 focus-visible:ring-primary/30"
               maxLength={100}
             />
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="edit-phone" className="text-xs">No. Telepon</Label>
+            <Label htmlFor="edit-phone" className="text-xs text-muted-foreground">No. Telepon</Label>
             <Input
               id="edit-phone"
               value={editPhone}
               onChange={(e) => setEditPhone(e.target.value)}
               placeholder="+62..."
-              className="rounded-xl h-11"
+              className="rounded-xl h-11 bg-muted border-0 focus-visible:ring-primary/30"
               maxLength={20}
             />
           </div>
@@ -262,7 +262,7 @@ const Profile = () => {
           <Button
             onClick={handleSaveProfile}
             disabled={saving}
-            className="w-full rounded-xl h-11 transition-all duration-200 hover:scale-[1.01] active:scale-[0.98]"
+            className="w-full rounded-xl h-11 font-semibold shadow-sm transition-all duration-200 hover:scale-[1.01] active:scale-[0.98]"
           >
             {saving ? (
               <div className="animate-spin h-4 w-4 border-2 border-primary-foreground border-t-transparent rounded-full" />
@@ -282,34 +282,22 @@ const Profile = () => {
           transition={{ delay: 0.2 }}
           className="space-y-2"
         >
-          <button
-            onClick={() => navigate("/cart")}
-            className="w-full flex items-center gap-3 p-4 bg-card rounded-2xl border border-border hover:shadow-sm transition-all duration-200 hover:scale-[1.01]"
-          >
-            <ShoppingBag className="h-5 w-5 text-primary" />
-            <span className="text-sm font-medium text-foreground flex-1 text-left">Pesanan Saya</span>
-            <ChevronRight className="h-4 w-4 text-muted-foreground" />
-          </button>
-
-          <button
-            onClick={() => setShowPasswordDialog(true)}
-            className="w-full flex items-center gap-3 p-4 bg-card rounded-2xl border border-border hover:shadow-sm transition-all duration-200 hover:scale-[1.01]"
-          >
-            <Lock className="h-5 w-5 text-muted-foreground" />
-            <span className="text-sm font-medium text-foreground flex-1 text-left">Ubah Password</span>
-            <ChevronRight className="h-4 w-4 text-muted-foreground" />
-          </button>
-
-          {isAdmin && (
-            <button
-              onClick={() => navigate("/admin")}
-              className="w-full flex items-center gap-3 p-4 bg-card rounded-2xl border border-border hover:shadow-sm transition-all duration-200 hover:scale-[1.01]"
+          {[
+            { icon: ShoppingBag, label: "Pesanan Saya", onClick: () => navigate("/cart"), color: "text-primary" },
+            { icon: Lock, label: "Ubah Password", onClick: () => setShowPasswordDialog(true), color: "text-muted-foreground" },
+            ...(isAdmin ? [{ icon: Settings, label: "Admin Panel", onClick: () => navigate("/admin"), color: "text-muted-foreground" }] : []),
+          ].map((menuItem) => (
+            <motion.button
+              key={menuItem.label}
+              whileTap={{ scale: 0.98 }}
+              onClick={menuItem.onClick}
+              className="w-full flex items-center gap-3.5 p-4 bg-card rounded-2xl border border-border/60 hover:shadow-md transition-all duration-200 shadow-sm"
             >
-              <Settings className="h-5 w-5 text-muted-foreground" />
-              <span className="text-sm font-medium text-foreground flex-1 text-left">Admin Panel</span>
+              <menuItem.icon className={`h-5 w-5 ${menuItem.color}`} />
+              <span className="text-sm font-medium text-foreground flex-1 text-left">{menuItem.label}</span>
               <ChevronRight className="h-4 w-4 text-muted-foreground" />
-            </button>
-          )}
+            </motion.button>
+          ))}
         </motion.div>
 
         {/* Logout */}
@@ -321,7 +309,7 @@ const Profile = () => {
           <Button
             onClick={handleLogout}
             variant="outline"
-            className="w-full rounded-xl h-11 text-destructive border-destructive/30 hover:bg-destructive/10 transition-all duration-200 hover:scale-[1.01]"
+            className="w-full rounded-xl h-12 text-destructive border-destructive/20 hover:bg-destructive/5 font-semibold transition-all duration-200 hover:scale-[1.01]"
           >
             <LogOut className="h-4 w-4 mr-2" />
             Logout
@@ -331,38 +319,38 @@ const Profile = () => {
 
       {/* Change Password Dialog */}
       <Dialog open={showPasswordDialog} onOpenChange={setShowPasswordDialog}>
-        <DialogContent className="max-w-sm mx-auto rounded-2xl">
+        <DialogContent className="max-w-sm mx-auto rounded-2xl border-border/60">
           <DialogHeader>
-            <DialogTitle>Ubah Password</DialogTitle>
+            <DialogTitle className="text-lg">Ubah Password</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4">
+          <div className="space-y-4 pt-2">
             <div className="space-y-1.5">
-              <Label className="text-xs">Password Baru</Label>
+              <Label className="text-xs text-muted-foreground">Password Baru</Label>
               <Input
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="Minimal 6 karakter"
-                className="rounded-xl h-11"
+                className="rounded-xl h-11 bg-muted border-0"
                 minLength={6}
                 maxLength={128}
               />
             </div>
             <div className="space-y-1.5">
-              <Label className="text-xs">Konfirmasi Password</Label>
+              <Label className="text-xs text-muted-foreground">Konfirmasi Password</Label>
               <Input
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Ulangi password baru"
-                className="rounded-xl h-11"
+                className="rounded-xl h-11 bg-muted border-0"
                 maxLength={128}
               />
             </div>
             <Button
               onClick={handleChangePassword}
               disabled={changingPassword}
-              className="w-full rounded-xl h-11"
+              className="w-full rounded-xl h-11 font-semibold"
             >
               {changingPassword ? (
                 <div className="animate-spin h-4 w-4 border-2 border-primary-foreground border-t-transparent rounded-full" />

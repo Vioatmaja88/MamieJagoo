@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 
 interface DBProduct {
   id: string;
@@ -30,6 +31,7 @@ const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addItem } = useCart();
+  const { user } = useAuth();
 
   const [product, setProduct] = useState<DBProduct | null>(null);
   const [variants, setVariants] = useState<string[]>([]);
@@ -38,10 +40,10 @@ const ProductDetail = () => {
 
   // Review state
   const [reviews, setReviews] = useState<ReviewItem[]>([]);
-  const [reviewName, setReviewName] = useState("");
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewComment, setReviewComment] = useState("");
   const [submittingReview, setSubmittingReview] = useState(false);
+  const [displayName, setDisplayName] = useState("");
 
   useEffect(() => {
     async function load() {
@@ -59,31 +61,49 @@ const ProductDetail = () => {
     loadReviews();
   }, [id]);
 
+  // Load display name for logged-in user
+  useEffect(() => {
+    if (user) {
+      supabase
+        .from("profiles")
+        .select("display_name")
+        .eq("user_id", user.id)
+        .maybeSingle()
+        .then(({ data }) => {
+          setDisplayName(data?.display_name ?? user.email?.split("@")[0] ?? "User");
+        });
+    }
+  }, [user]);
+
   const loadReviews = async () => {
     const { data } = await supabase
       .from("reviews")
       .select("id, customer_name, rating, comment, created_at")
-      .eq("is_approved", true)
       .order("created_at", { ascending: false })
-      .limit(10);
+      .limit(20);
     setReviews(data ?? []);
   };
 
   const handleSubmitReview = async () => {
-    if (!reviewName.trim()) { toast.error("Masukkan nama kamu"); return; }
+    if (!user) {
+      toast.error("Silakan login terlebih dahulu");
+      navigate("/auth");
+      return;
+    }
     setSubmittingReview(true);
     const { error } = await supabase.from("reviews").insert({
-      customer_name: reviewName.trim(),
+      customer_name: displayName,
       rating: reviewRating,
       comment: reviewComment.trim() || null,
+      is_approved: true,
     });
     if (error) {
       toast.error("Gagal mengirim review");
     } else {
-      toast.success("Review terkirim! Menunggu persetujuan admin.");
-      setReviewName("");
+      toast.success("Review berhasil dikirim!");
       setReviewRating(5);
       setReviewComment("");
+      loadReviews();
     }
     setSubmittingReview(false);
   };
@@ -123,145 +143,176 @@ const ProductDetail = () => {
   };
 
   return (
-    <div className="pb-20">
-      <div className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="flex items-center gap-3 px-4 py-3 max-w-lg mx-auto">
-          <button onClick={() => navigate(-1)}>
+    <div className="pb-24">
+      {/* Header */}
+      <div className="sticky top-0 z-40 bg-background/70 backdrop-blur-xl border-b border-border/50">
+        <div className="flex items-center gap-3 px-5 py-3.5 max-w-lg mx-auto">
+          <motion.button whileTap={{ scale: 0.85 }} onClick={() => navigate(-1)}>
             <ArrowLeft className="h-5 w-5 text-foreground" />
-          </button>
+          </motion.button>
           <h1 className="text-base font-bold text-foreground truncate">{product.name}</h1>
         </div>
       </div>
 
       <main className="max-w-lg mx-auto">
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="aspect-square overflow-hidden">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }} className="aspect-square overflow-hidden">
           <img src={product.image_url ?? "/placeholder.svg"} alt={product.name} className="w-full h-full object-cover" />
         </motion.div>
 
-        <div className="px-4 py-4 space-y-4">
-          <div>
+        <div className="px-5 py-5 space-y-5">
+          {/* Product info */}
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-bold text-foreground">{product.name}</h2>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 bg-secondary/10 px-2.5 py-1 rounded-lg">
                 <Star className="h-4 w-4 fill-secondary text-secondary" />
-                <span className="text-sm font-medium">{product.rating}</span>
+                <span className="text-sm font-semibold text-secondary">{product.rating}</span>
               </div>
             </div>
-            <p className="text-primary text-xl font-bold mt-1">{formatRupiah(product.price)}</p>
-            {product.description && <p className="text-sm text-muted-foreground mt-2">{product.description}</p>}
-          </div>
+            <p className="text-primary text-2xl font-bold mt-2">{formatRupiah(product.price)}</p>
+            {product.description && <p className="text-sm text-muted-foreground mt-3 leading-relaxed">{product.description}</p>}
+          </motion.div>
 
+          {/* Variants */}
           {variants.length > 0 && (
-            <div>
-              <h3 className="text-sm font-semibold text-foreground mb-2">Varian Rasa</h3>
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+              <h3 className="text-sm font-semibold text-foreground mb-2.5">Varian Rasa</h3>
               <div className="flex flex-wrap gap-2">
                 {variants.map((v) => (
-                  <button
+                  <motion.button
                     key={v}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => setSelectedVariant(v)}
-                    className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
-                      selectedVariant === v ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                    className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                      selectedVariant === v
+                        ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
+                        : "bg-muted text-muted-foreground hover:bg-accent"
                     }`}
                   >
                     {v}
-                  </button>
+                  </motion.button>
                 ))}
               </div>
-            </div>
+            </motion.div>
           )}
 
-          <div className="flex gap-3 pt-2">
-            <Button onClick={handleAddToCart} className="flex-1 rounded-xl h-12 text-sm font-semibold">
+          {/* Action buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex gap-3 pt-1"
+          >
+            <Button
+              onClick={handleAddToCart}
+              className="flex-1 rounded-xl h-12 text-sm font-semibold shadow-md shadow-primary/20 hover:shadow-primary/30 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+            >
               <ShoppingCart className="h-4 w-4 mr-2" />
               Tambah ke Cart
             </Button>
             <Button
               onClick={handleWhatsApp}
               variant="outline"
-              className="rounded-xl h-12 px-4 border-green-500 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20"
+              className="rounded-xl h-12 px-5 border-green-500/50 text-green-600 hover:bg-green-500/10 dark:text-green-400 dark:border-green-500/30 dark:hover:bg-green-500/10 transition-all duration-200 hover:scale-[1.02]"
             >
               <MessageCircle className="h-4 w-4" />
             </Button>
-          </div>
+          </motion.div>
 
           {/* Review Section */}
-          <div className="border-t border-border pt-4 mt-4 space-y-4">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="border-t border-border/50 pt-6 mt-2 space-y-5"
+          >
             <h3 className="text-base font-bold text-foreground">Tulis Review</h3>
-            <div className="bg-card rounded-2xl border border-border p-4 space-y-3">
-              <input
-                value={reviewName}
-                onChange={(e) => setReviewName(e.target.value)}
-                placeholder="Nama kamu"
-                className="w-full px-3 py-2.5 bg-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition"
-              />
-              <div>
-                <p className="text-xs text-muted-foreground mb-1.5">Rating</p>
-                <div className="flex gap-1">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <button key={s} onClick={() => setReviewRating(s)}>
-                      <Star
-                        className={`h-6 w-6 transition-colors ${
-                          s <= reviewRating ? "fill-secondary text-secondary" : "text-muted-foreground"
-                        }`}
-                      />
-                    </button>
-                  ))}
+            {user ? (
+              <div className="bg-card rounded-2xl border border-border/60 p-5 space-y-4 shadow-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
+                    {displayName[0]?.toUpperCase() ?? "U"}
+                  </div>
+                  <span className="text-sm font-semibold text-foreground">{displayName}</span>
                 </div>
+                <div>
+                  <p className="text-xs text-muted-foreground mb-2">Rating</p>
+                  <div className="flex gap-1.5">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <motion.button key={s} whileTap={{ scale: 0.8 }} onClick={() => setReviewRating(s)}>
+                        <Star
+                          className={`h-7 w-7 transition-colors duration-150 ${
+                            s <= reviewRating ? "fill-secondary text-secondary" : "text-muted-foreground/30"
+                          }`}
+                        />
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+                <textarea
+                  value={reviewComment}
+                  onChange={(e) => setReviewComment(e.target.value)}
+                  placeholder="Tulis komentar (opsional)"
+                  rows={3}
+                  className="w-full px-4 py-3 bg-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none transition-all duration-200"
+                />
+                <Button
+                  onClick={handleSubmitReview}
+                  disabled={submittingReview}
+                  className="w-full rounded-xl h-11 text-sm font-semibold shadow-sm hover:scale-[1.01] active:scale-[0.99] transition-all duration-200"
+                >
+                  <Send className="h-4 w-4 mr-2" />
+                  {submittingReview ? "Mengirim..." : "Kirim Review"}
+                </Button>
               </div>
-              <textarea
-                value={reviewComment}
-                onChange={(e) => setReviewComment(e.target.value)}
-                placeholder="Komentar (opsional)"
-                rows={2}
-                className="w-full px-3 py-2.5 bg-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none transition"
-              />
-              <Button
-                onClick={handleSubmitReview}
-                disabled={submittingReview || !reviewName.trim()}
-                className="w-full rounded-xl h-10 text-sm"
-              >
-                <Send className="h-4 w-4 mr-2" />
-                {submittingReview ? "Mengirim..." : "Kirim Review"}
-              </Button>
-            </div>
+            ) : (
+              <div className="bg-muted rounded-2xl p-6 text-center">
+                <p className="text-sm text-muted-foreground mb-3">Login untuk menulis review</p>
+                <Button onClick={() => navigate("/auth")} variant="outline" className="rounded-xl">
+                  Login / Register
+                </Button>
+              </div>
+            )}
 
             {/* Existing reviews */}
             {reviews.length > 0 && (
               <div className="space-y-3">
-                <h3 className="text-sm font-semibold text-foreground">Review Terbaru</h3>
+                <h3 className="text-sm font-semibold text-foreground">Review ({reviews.length})</h3>
                 {reviews.map((r, i) => (
                   <motion.div
                     key={r.id}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                    className="bg-card rounded-2xl border border-border p-3"
+                    transition={{ delay: i * 0.04 }}
+                    className="bg-card rounded-2xl border border-border/60 p-4 shadow-sm"
                   >
-                    <div className="flex items-center justify-between mb-1">
-                      <div className="flex items-center gap-2">
-                        <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">
                           {r.customer_name[0]}
                         </div>
-                        <p className="font-semibold text-sm text-foreground">{r.customer_name}</p>
+                        <div>
+                          <p className="font-semibold text-sm text-foreground">{r.customer_name}</p>
+                          <p className="text-[10px] text-muted-foreground">
+                            {new Date(r.created_at).toLocaleDateString("id-ID")}
+                          </p>
+                        </div>
                       </div>
                       <div className="flex gap-0.5">
                         {Array.from({ length: 5 }).map((_, j) => (
                           <Star
                             key={j}
-                            className={`h-3 w-3 ${j < r.rating ? "fill-secondary text-secondary" : "text-muted"}`}
+                            className={`h-3.5 w-3.5 ${j < r.rating ? "fill-secondary text-secondary" : "text-muted-foreground/20"}`}
                           />
                         ))}
                       </div>
                     </div>
-                    {r.comment && <p className="text-xs text-muted-foreground mt-1">{r.comment}</p>}
-                    <p className="text-[10px] text-muted-foreground mt-1">
-                      {new Date(r.created_at).toLocaleDateString("id-ID")}
-                    </p>
+                    {r.comment && <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">{r.comment}</p>}
                   </motion.div>
                 ))}
               </div>
             )}
-          </div>
+          </motion.div>
         </div>
       </main>
     </div>
