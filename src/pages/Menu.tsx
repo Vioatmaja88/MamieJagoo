@@ -46,13 +46,13 @@ const Menu = () => {
   return (
     <div className="pb-24">
       <header className="sticky top-0 z-40 bg-background/70 backdrop-blur-xl border-b border-border/50">
-        <div className="flex items-center justify-between px-5 py-3.5 max-w-lg mx-auto">
+        <div className="flex items-center justify-between px-5 lg:px-8 py-3.5 max-w-lg lg:max-w-5xl mx-auto">
           <h1 className="text-xl font-extrabold text-foreground tracking-tight">Menu</h1>
           <ThemeToggle />
         </div>
       </header>
 
-      <main className="max-w-lg mx-auto px-5 space-y-5 mt-5">
+      <main className="max-w-lg lg:max-w-5xl mx-auto px-5 lg:px-8 space-y-5 mt-5">
         <div className="relative">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <input
@@ -85,7 +85,7 @@ const Menu = () => {
           variants={container}
           initial="hidden"
           animate="show"
-          className="grid grid-cols-2 gap-3.5"
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
         >
           {filtered.map((p) => (
             <motion.div key={p.id} variants={item}>
