@@ -7,7 +7,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import mamiejagoLogo from "@/assets/mamiejago-text-logo.jpg";
+import mamiejagoLogo from "@/assets/mamiejago-logo-text.png";
 
 function generateOrderId() {
   return "MJ-" + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substring(2, 5).toUpperCase();
