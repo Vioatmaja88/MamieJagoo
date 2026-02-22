@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { Flame, Sparkles } from "lucide-react";
+import mamiejagoLogo from "@/assets/mamiejago-logo-text.png";
 
 const CATEGORIES = ["Semua", "Mie", "Wonton", "Dimsum", "Minuman"];
 
@@ -49,7 +50,7 @@ const Index = () => {
       <header className="sticky top-0 z-40 bg-background/70 backdrop-blur-xl border-b border-border/50">
         <div className="flex items-center justify-between px-5 lg:px-8 py-3.5 max-w-lg lg:max-w-5xl mx-auto">
           <div>
-            <h1 className="text-xl font-extrabold text-primary tracking-tight">MamieJago</h1>
+            <img src={mamiejagoLogo} alt="MamieJago" className="h-8 object-contain" />
             <p className="text-[11px] text-muted-foreground -mt-0.5 tracking-wide">Makanan Siap Saji Premium 🍜</p>
           </div>
           <ThemeToggle />
