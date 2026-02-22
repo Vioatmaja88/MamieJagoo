@@ -130,7 +130,7 @@ const Profile = () => {
     return (
       <div className="pb-24">
         <header className="sticky top-0 z-40 bg-background/70 backdrop-blur-xl border-b border-border/50">
-          <div className="flex items-center justify-between px-5 py-3.5 max-w-lg mx-auto">
+          <div className="flex items-center justify-between px-5 lg:px-8 py-3.5 max-w-lg lg:max-w-2xl mx-auto">
             <h1 className="text-xl font-extrabold text-foreground tracking-tight">Profile</h1>
             <ThemeToggle />
           </div>
@@ -182,13 +182,13 @@ const Profile = () => {
   return (
     <div className="pb-24">
       <header className="sticky top-0 z-40 bg-background/70 backdrop-blur-xl border-b border-border/50">
-        <div className="flex items-center justify-between px-5 py-3.5 max-w-lg mx-auto">
+        <div className="flex items-center justify-between px-5 lg:px-8 py-3.5 max-w-lg lg:max-w-2xl mx-auto">
           <h1 className="text-xl font-extrabold text-foreground tracking-tight">Profile</h1>
           <ThemeToggle />
         </div>
       </header>
 
-      <main className="max-w-lg mx-auto px-5 mt-6 space-y-5">
+      <main className="max-w-lg lg:max-w-2xl mx-auto px-5 lg:px-8 mt-6 space-y-5">
         {/* Avatar section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

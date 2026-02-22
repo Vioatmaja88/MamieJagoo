@@ -47,7 +47,7 @@ const Index = () => {
     <div className="pb-24">
       {/* Header */}
       <header className="sticky top-0 z-40 bg-background/70 backdrop-blur-xl border-b border-border/50">
-        <div className="flex items-center justify-between px-5 py-3.5 max-w-lg mx-auto">
+        <div className="flex items-center justify-between px-5 lg:px-8 py-3.5 max-w-lg lg:max-w-5xl mx-auto">
           <div>
             <h1 className="text-xl font-extrabold text-primary tracking-tight">MamieJago</h1>
             <p className="text-[11px] text-muted-foreground -mt-0.5 tracking-wide">Makanan Siap Saji Premium 🍜</p>
@@ -56,7 +56,7 @@ const Index = () => {
         </div>
       </header>
 
-      <main className="max-w-lg mx-auto px-5 space-y-7 mt-5">
+      <main className="max-w-lg lg:max-w-5xl mx-auto px-5 lg:px-8 space-y-7 mt-5">
         <BannerSlider />
 
         {/* Category filter */}
@@ -88,7 +88,7 @@ const Index = () => {
               variants={container}
               initial="hidden"
               animate="show"
-              className="grid grid-cols-2 gap-3.5"
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
             >
               {popular.map((p) => (
                 <motion.div key={p.id} variants={item}>
@@ -112,7 +112,7 @@ const Index = () => {
             variants={container}
             initial="hidden"
             animate="show"
-            className="grid grid-cols-2 gap-3.5"
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
           >
             {filtered.map((p) => (
               <motion.div key={p.id} variants={item}>

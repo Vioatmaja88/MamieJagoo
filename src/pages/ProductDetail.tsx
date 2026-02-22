@@ -146,7 +146,7 @@ const ProductDetail = () => {
     <div className="pb-24">
       {/* Header */}
       <div className="sticky top-0 z-40 bg-background/70 backdrop-blur-xl border-b border-border/50">
-        <div className="flex items-center gap-3 px-5 py-3.5 max-w-lg mx-auto">
+        <div className="flex items-center gap-3 px-5 lg:px-8 py-3.5 max-w-lg lg:max-w-3xl mx-auto">
           <motion.button whileTap={{ scale: 0.85 }} onClick={() => navigate(-1)}>
             <ArrowLeft className="h-5 w-5 text-foreground" />
           </motion.button>
@@ -154,7 +154,7 @@ const ProductDetail = () => {
         </div>
       </div>
 
-      <main className="max-w-lg mx-auto">
+      <main className="max-w-lg lg:max-w-3xl mx-auto">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }} className="aspect-square overflow-hidden">
           <img src={product.image_url ?? "/placeholder.svg"} alt={product.name} className="w-full h-full object-cover" />
         </motion.div>
