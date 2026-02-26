@@ -38,23 +38,6 @@ Lalu letakkan di root folder project.
 
 ---
 
-## Struktur Project
-
-mamiejago/
-│
-├── src/
-├── components/
-├── pages/
-├── styles/
-├── public/
-├── database/
-│
-├── package.json
-├── tsconfig.json
-└── README.md
-
----
-
 ## Cara Install
 
 1. Clone repository
@@ -102,10 +85,10 @@ Jika menggunakan PostgreSQL:
 Contoh konfigurasi:
 
 DB_HOST=localhost
-DB_USER=postgres
-DB_PASSWORD=password
-DB_NAME=mamiejago
-DB_PORT=5432
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=nama_database
+DB_PORT=3000
 
 ---
 
