@@ -43,10 +43,9 @@ Website ini didesain modern, responsif, dan pastinya user-friendly biar lo betah
 
 Penampakan aplikasinya kira-kira kayak gini:
 
-```
-./screenshots/homepage.png
-./screenshots/detail.png
-```
+![Home Page](http://elainaacdn.vercel.app/file/a8d2d492b9.jpg)
+
+
 
 Atau coba langsung demo online:
 
