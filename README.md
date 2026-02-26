@@ -1,116 +1,121 @@
-# MamieJago 🍜
+# 🍜 MamieJago — Makan Enak, Ga Pake Ribet!
 
-MamieJago adalah website pemesanan makanan siap saji premium yang menyediakan berbagai menu seperti mie, wonton, dan dimsum.
-Website ini dirancang dengan tampilan modern, clean, dan user friendly serta responsive di berbagai perangkat.
+MamieJago adalah tempat favorit buat lo yang pengen pesen makanan siap saji premium secara online. Mulai dari mie, wonton, sampe dimsum — semua ada, tinggal klik doang! 😋
 
----
-
-## Fitur Utama
-
-- Home Page
-- Kategori Menu
-- Daftar Produk
-- Detail Produk
-- Cart / Keranjang
-- Review Produk
-- Profile User
-- Responsive Design
-- UI Modern dan Clean
+Website ini didesain modern, responsif, dan pastinya user-friendly biar lo betah bolak-balik order.
 
 ---
 
-## Screenshot
+## ✨ Kenapa Harus MamieJago?
 
-Tambahkan file screenshot dengan nama:
-
-preview.png
-
-Lalu letakkan di root folder project.
-
----
-
-## Teknologi Yang Digunakan
-
-- TypeScript (95.1%)
-- PLpgSQL (Database)
-- CSS
-- Other Dependencies
+· 🏠 Home — Langsung lihat promo dan rekomendasi
+· 🍜 Kategori Menu — Cepat nemuin makanan favorit
+· 📋 Daftar Produk — Lengkap sama harga & deskripsi
+· 🔍 Detail Produk — Biar lo tau persis apa yang dimakan
+· 🛒 Keranjang Belanja — Check out dalam hitungan detik
+· ⭐ Review Produk — Baca pengalaman pembeli lain
+· 👤 Profil User — Semua riwayat order ada di sini
+· 📱 Responsive — Lancar di HP, tablet, atau laptop
+· ✨ Tampilan Modern & Clean — Dijamin mata adem
 
 ---
 
-## Cara Install
+## 📸 Preview
 
-1. Clone repository
+Penampakan aplikasinya kira-kira kayak gini:
 
-git clone https://github.com/Vioatmaja88/MamieJagoo
+```
+https://via.placeholder.com/1200x600/FFD700/000000?text=MamieJago+Preview
+```
 
-2. Masuk ke folder project
+Ganti link di atas dengan screenshot asli project lo biar lebih kece!
 
+---
+
+## 🔧 Teknologi yang Dipakai 
+
+· ⚛️ TypeScript (95.1% — iya, dominan banget!)
+· 🐘 PL/pgSQL (urusan database)
+· 🎨 CSS (tampilan biar cakep)
+· ⚡ React / Next.js (kode TypeScript-nya ngasih petunjuk)
+· 🧰 Node.js + npm (yang ngejalanin semuanya)
+
+---
+
+## 🚀 Cara Pasang & Jalanin
+
+Ikutin langkah-langkah ini, dijamin gaspol! 💨
+
+1. Clone dulu
+
+```bash
+git clone https://github.com/Vioatmaja88/MamieJagoo.git
 cd MamieJagoo
+```
 
-3. Install dependencies
+2. Install dependensi
 
+```bash
 npm install
+# atau
+yarn install
+```
 
----
+3. Jalanin mode develop
 
-## Menjalankan Project
-
+```bash
 npm run dev
+```
 
-atau
+Terus buka http://localhost:3000 di browser lo.
 
-npm start
+4. Build buat production
 
-Buka browser:
-
-http://localhost:3000
-
----
-
-## Build Project
-
+```bash
 npm run build
+```
 
 ---
 
-## Setup Database
+## 🗄️ Setup Database (PostgreSQL)
 
-Jika menggunakan PostgreSQL:
+Kalau mau pake database, ini dia konfigurasi minimalnya:
 
-1. Buat database baru
-2. Import file SQL jika tersedia
-3. Konfigurasi koneksi database
-
-Contoh konfigurasi:
-
+```env
 DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=
-DB_NAME=nama_database
-DB_PORT=3000
+DB_USER=postgres
+DB_PASSWORD=rahasia123
+DB_NAME=mamiejago_db
+DB_PORT=5432
+```
+
+Jangan lupa buat databasenya dulu dan import file .sql kalau ada.
 
 ---
 
-## Tujuan Project
+## 🎯 Tujuan Project
 
-Project ini dibuat untuk:
-- Pembelajaran
-- Portfolio
-- Latihan membuat website
-- Sistem pemesanan makanan
+Project ini dibuat buat:
+
+· Belajar bikin web modern dari nol
+· Nambah portofolio biar makin kinclong
+· Latihan bikin sistem pemesanan makanan
+· Cobain teknologi kaya TypeScript & PostgreSQL
 
 ---
 
-## Developer
+## 🧑‍💻 Developer
 
 Vio Atmajaya Saputra
-
-GitHub:
-https://github.com/Vioatmaja88
+🔗 GitHub 
 
 ---
 
-## Lisensi
+## 📄 Lisensi
 
-Project ini dibuat untuk pembelajaran dan portfolio.
+Untuk keperluan belajar dan portofolio aja ya. Jangan dijual tanpa izin developer! 😉
+
+---
+
+Mau nanya, saran, atau ngasih kritik?
+Buka aja issue di repo ini, kita ngopi virtual bareng! ☕
