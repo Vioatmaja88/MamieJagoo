@@ -1,25 +1,59 @@
-# Welcome to your Lovable project
+# MamieJago 🍜
 
-## Project info
+Website pemesanan makanan siap saji premium bernama **MamieJago**.  
+Website ini menyediakan berbagai menu seperti mie, wonton, dan dimsum dengan tampilan modern dan user friendly.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Tampilan Website
 
-## How can I edit this code?
+Website memiliki tampilan utama berupa:
+- Banner promo makanan
+- Kategori menu (Semua, Mie, Wonton, Dimsum)
+- Daftar menu makanan
+- Halaman cart
+- Halaman review
+- Halaman profile
 
-There are several ways of editing your application.
+Contoh menu yang tersedia:
+- Wonton
+- Mie Jebew
+- Dimsum Keju Lumer
+- Dan menu lainnya
 
-**Use Lovable**
+Website dirancang agar mudah digunakan di HP maupun desktop (responsive).
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## Fitur
 
-Changes made via Lovable will be committed automatically to this repo.
+- Home Page
+- Kategori Menu
+- Daftar Produk
+- Cart / Keranjang
+- Review
+- Profile
+- Responsive Design
+- UI Modern dan Clean
 
-**Use your preferred IDE**
+## Tampilan Aplikasi
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Berikut adalah tampilan halaman utama:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+![MamieJago](preview.png)
 
+## Teknologi Yang Digunakan
+
+- HTML
+- CSS
+- JavaScript
+
+## Developer
+
+Dikembangkan oleh:
+
+**Vio Atmajaya Saputra**  
+GitHub: https://github.com/Vioatmaja88
+
+## Project
+
+Project ini dibuat untuk pembelajaran dan pengembangan website pemesanan makanan.
 Follow these steps:
 
 ```sh
