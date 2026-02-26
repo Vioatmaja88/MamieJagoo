@@ -1,6 +1,12 @@
 # 🍜 MamieJago — Makan Enak, Ga Pake Ribet!
 
-MamieJago adalah tempat favorit buat lo yang pengen pesen makanan siap saji premium secara online. Mulai dari mie, wonton, sampe dimsum — semua ada, tinggal klik doang! 😋
+![Repo Size](https://img.shields.io/github/repo-size/Vioatmaja88/MamieJagoo)
+![Last Commit](https://img.shields.io/github/last-commit/Vioatmaja88/MamieJagoo)
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?logo=vercel)
+
+MamieJago adalah tempat favorit buat lo yang pengen pesen makanan siap saji premium secara online.  
+Mulai dari mie, wonton, sampe dimsum — semua ada, tinggal klik doang! 😋
 
 Website ini didesain modern, responsif, dan pastinya user-friendly biar lo betah bolak-balik order.
 
@@ -8,15 +14,25 @@ Website ini didesain modern, responsif, dan pastinya user-friendly biar lo betah
 
 ## ✨ Kenapa Harus MamieJago?
 
-· 🏠 Home — Langsung lihat promo dan rekomendasi
-· 🍜 Kategori Menu — Cepat nemuin makanan favorit
-· 📋 Daftar Produk — Lengkap sama harga & deskripsi
-· 🔍 Detail Produk — Biar lo tau persis apa yang dimakan
-· 🛒 Keranjang Belanja — Check out dalam hitungan detik
-· ⭐ Review Produk — Baca pengalaman pembeli lain
-· 👤 Profil User — Semua riwayat order ada di sini
-· 📱 Responsive — Lancar di HP, tablet, atau laptop
-· ✨ Tampilan Modern & Clean — Dijamin mata adem
+- 🏠 **Home** — Langsung lihat promo dan rekomendasi
+- 🍜 **Kategori Menu** — Cepat nemuin makanan favorit
+- 📋 **Daftar Produk** — Lengkap sama harga & deskripsi
+- 🔍 **Detail Produk** — Biar lo tau persis apa yang dimakan
+- 🛒 **Keranjang Belanja** — Checkout dalam hitungan detik
+- ⭐ **Review Produk** — Baca pengalaman pembeli lain
+- 👤 **Profil User** — Semua riwayat order ada di sini
+- 📱 **Responsive** — Lancar di HP, tablet, atau laptop
+- ✨ **Modern UI** — Tampilan clean dan enak dilihat
+
+---
+
+## 🗓️ Roadmap (Fitur Akan Datang)
+
+- 🔎 Pencarian makanan cepat
+- 💰 Filter harga & kategori
+- 🔐 Login dengan Google
+- 📧 Notifikasi promo email
+- 🎟️ Voucher dan diskon
 
 ---
 
@@ -25,51 +41,61 @@ Website ini didesain modern, responsif, dan pastinya user-friendly biar lo betah
 Penampakan aplikasinya kira-kira kayak gini:
 
 ```
-https://via.placeholder.com/1200x600/FFD700/000000?text=MamieJago+Preview
+./screenshots/homepage.png
+./screenshots/detail.png
 ```
 
-Ganti link di atas dengan screenshot asli project lo biar lebih kece!
+Atau coba langsung demo online:
+
+🔗 https://mamiejago.vercel.app
 
 ---
 
-## 🔧 Teknologi yang Dipakai 
+## 🔧 Teknologi yang Dipakai
 
-· ⚛️ TypeScript (95.1% — iya, dominan banget!)
-· 🐘 PL/pgSQL (urusan database)
-· 🎨 CSS (tampilan biar cakep)
-· ⚡ React / Next.js (kode TypeScript-nya ngasih petunjuk)
-· 🧰 Node.js + npm (yang ngejalanin semuanya)
+- ⚛️ **TypeScript** (95.1%)
+- 🐘 **PL/pgSQL**
+- 🎨 **CSS**
+- ⚡ **React / Next.js**
+- 🧰 **Node.js**
+- 📦 **npm**
 
 ---
 
-## 🚀 Cara Pasang & Jalanin
+## 🚀 Cara Install & Jalanin
 
-Ikutin langkah-langkah ini, dijamin gaspol! 💨
-
-1. Clone dulu
+### 1. Clone Repository
 
 ```bash
 git clone https://github.com/Vioatmaja88/MamieJagoo.git
 cd MamieJagoo
 ```
 
-2. Install dependensi
+### 2. Install Dependencies
 
 ```bash
 npm install
-# atau
+```
+
+atau
+
+```bash
 yarn install
 ```
 
-3. Jalanin mode develop
+### 3. Jalankan Mode Development
 
 ```bash
 npm run dev
 ```
 
-Terus buka http://localhost:3000 di browser lo.
+Buka di browser:
 
-4. Build buat production
+```
+http://localhost:3000
+```
+
+### 4. Build Production
 
 ```bash
 npm run build
@@ -79,7 +105,7 @@ npm run build
 
 ## 🗄️ Setup Database (PostgreSQL)
 
-Kalau mau pake database, ini dia konfigurasi minimalnya:
+Buat file `.env`:
 
 ```env
 DB_HOST=localhost
@@ -89,33 +115,52 @@ DB_NAME=mamiejago_db
 DB_PORT=5432
 ```
 
-Jangan lupa buat databasenya dulu dan import file .sql kalau ada.
+Jangan lupa buat databasenya dulu.
 
 ---
 
 ## 🎯 Tujuan Project
 
-Project ini dibuat buat:
+Project ini dibuat untuk:
 
-· Belajar bikin web modern dari nol
-· Nambah portofolio biar makin kinclong
-· Latihan bikin sistem pemesanan makanan
-· Cobain teknologi kaya TypeScript & PostgreSQL
+- Belajar bikin web modern
+- Portfolio developer
+- Sistem pemesanan makanan
+- Latihan TypeScript & PostgreSQL
+
+---
+
+## 🤝 Kontribusi
+
+Mau bantu ngembangin? Gas!
+
+```bash
+git checkout -b fitur-baru
+git commit -m "Tambah fitur baru"
+git push origin fitur-baru
+```
+
+Terus buka Pull Request 🚀
 
 ---
 
 ## 🧑‍💻 Developer
 
-Vio Atmajaya Saputra
-🔗 GitHub 
+**Vio Atmajaya Saputra**
+
+GitHub:  
+https://github.com/Vioatmaja88
 
 ---
 
 ## 📄 Lisensi
 
-Untuk keperluan belajar dan portofolio aja ya. Jangan dijual tanpa izin developer! 😉
+MIT License — Bebas dipakai untuk pembelajaran dan portfolio.
 
 ---
 
-Mau nanya, saran, atau ngasih kritik?
-Buka aja issue di repo ini, kita ngopi virtual bareng! ☕
+## ☕ Feedback
+
+Punya saran atau nemu bug?
+
+Buka issue di repo ini ya!
