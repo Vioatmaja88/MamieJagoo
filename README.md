@@ -50,7 +50,7 @@ Penampakan aplikasinya kira-kira kayak gini:
 
 Atau coba langsung demo online:
 
-🔗 https://mamiejago.vercel.app
+🔗 https://mamiejago.lovable.app
 
 ---
 
