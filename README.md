@@ -1,5 +1,8 @@
 # 🍜 MamieJago — Makan Enak, Ga Pake Ribet!
 
+![Stars](https://img.shields.io/github/stars/Vioatmaja88/MamieJagoo?style=social)
+![Visitors](https://visitor-badge.laobi.icu/badge?page_id=Vioatmaja88.MamieJagoo)
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
 ![Repo Size](https://img.shields.io/github/repo-size/Vioatmaja88/MamieJagoo)
 ![Last Commit](https://img.shields.io/github/last-commit/Vioatmaja88/MamieJagoo)
 ![License](https://img.shields.io/badge/license-MIT-blue)
@@ -155,7 +158,9 @@ https://github.com/Vioatmaja88
 
 ## 📄 Lisensi
 
-MIT License — Bebas dipakai untuk pembelajaran dan portfolio.
+Project ini dibuat untuk pembelajaran dan portfolio.
+
+⚠️ **Dilarang menjual project ini tanpa izin dari developer.**
 
 ---
 
