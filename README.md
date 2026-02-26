@@ -42,11 +42,11 @@ Lalu letakkan di root folder project.
 
 1. Clone repository
 
-git clone https://github.com/Vioatmaja88/mamiejago-8dc42338.git
+git clone https://github.com/Vioatmaja88/MamieJagoo
 
 2. Masuk ke folder project
 
-cd mamiejago-8dc42338
+cd MamieJagoo
 
 3. Install dependencies
 
