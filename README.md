@@ -1,107 +1,133 @@
 # MamieJago 🍜
 
-Website pemesanan makanan siap saji premium bernama **MamieJago**.  
-Website ini menyediakan berbagai menu seperti mie, wonton, dan dimsum dengan tampilan modern dan user friendly.
+MamieJago adalah website pemesanan makanan siap saji premium yang menyediakan berbagai menu seperti mie, wonton, dan dimsum.
+Website ini dirancang dengan tampilan modern, clean, dan user friendly serta responsive di berbagai perangkat.
 
-## Tampilan Website
+---
 
-Website memiliki tampilan utama berupa:
-- Banner promo makanan
-- Kategori menu (Semua, Mie, Wonton, Dimsum)
-- Daftar menu makanan
-- Halaman cart
-- Halaman review
-- Halaman profile
-
-Contoh menu yang tersedia:
-- Wonton
-- Mie Jebew
-- Dimsum Keju Lumer
-- Dan menu lainnya
-
-Website dirancang agar mudah digunakan di HP maupun desktop (responsive).
-
-## Fitur
+## Fitur Utama
 
 - Home Page
 - Kategori Menu
 - Daftar Produk
+- Detail Produk
 - Cart / Keranjang
-- Review
-- Profile
+- Review Produk
+- Profile User
 - Responsive Design
 - UI Modern dan Clean
 
-## Tampilan Aplikasi
+---
 
-Berikut adalah tampilan halaman utama:
+## Screenshot
 
-![MamieJago](preview.png)
+Tambahkan file screenshot dengan nama:
+
+preview.png
+
+Lalu letakkan di root folder project.
+
+---
 
 ## Teknologi Yang Digunakan
 
-- HTML
+- TypeScript (95.1%)
+- PLpgSQL (Database)
 - CSS
-- JavaScript
+- Other Dependencies
+
+---
+
+## Struktur Project
+
+mamiejago/
+│
+├── src/
+├── components/
+├── pages/
+├── styles/
+├── public/
+├── database/
+│
+├── package.json
+├── tsconfig.json
+└── README.md
+
+---
+
+## Cara Install
+
+1. Clone repository
+
+git clone https://github.com/Vioatmaja88/mamiejago-8dc42338.git
+
+2. Masuk ke folder project
+
+cd mamiejago-8dc42338
+
+3. Install dependencies
+
+npm install
+
+---
+
+## Menjalankan Project
+
+npm run dev
+
+atau
+
+npm start
+
+Buka browser:
+
+http://localhost:3000
+
+---
+
+## Build Project
+
+npm run build
+
+---
+
+## Setup Database
+
+Jika menggunakan PostgreSQL:
+
+1. Buat database baru
+2. Import file SQL jika tersedia
+3. Konfigurasi koneksi database
+
+Contoh konfigurasi:
+
+DB_HOST=localhost
+DB_USER=postgres
+DB_PASSWORD=password
+DB_NAME=mamiejago
+DB_PORT=5432
+
+---
+
+## Tujuan Project
+
+Project ini dibuat untuk:
+- Pembelajaran
+- Portfolio
+- Latihan membuat website
+- Sistem pemesanan makanan
+
+---
 
 ## Developer
 
-Dikembangkan oleh:
+Vio Atmajaya Saputra
 
-**Vio Atmajaya Saputra**  
-GitHub: https://github.com/Vioatmaja88
+GitHub:
+https://github.com/Vioatmaja88
 
-## Project
+---
 
-Project ini dibuat untuk pembelajaran dan pengembangan website pemesanan makanan.
-Follow these steps:
+## Lisensi
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Project ini dibuat untuk pembelajaran dan portfolio.
